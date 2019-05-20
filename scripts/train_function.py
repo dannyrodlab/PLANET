@@ -15,15 +15,13 @@ import copy
 ## import visdom
 
 def save_checkpoint(state, filename):
-    print("=> saving checkpoint '{}'".format(filename))
     filename_checkpoint = 'checkpoints/'+ filename + '_checkpoint.pth.tar'
     if os.path.isfile(filename_checkpoint):
         filename_checkpoint = 'checkpoints/'+ filename + '_new_checkpoint.pth.tar'
-        ## torch.save(state, filename_checkpoint)
-        print('Come on!')
+        torch.save(state, filename_checkpoint)
     else:
-        ## torch.save(state, filename_checkpoint)
-        print('Come on two!')
+        torch.save(state, filename_checkpoint)
+    print("=> Checkpoint saved at: '{}'".format(filename_checkpoint))
 
 def train_model(name, resume, model, dataloaders, criterion, optimizer, device, num_epochs, is_inception=False):
     """
