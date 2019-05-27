@@ -100,10 +100,13 @@ def train_model(name, resume, model, dataloaders, criterion, optimizer, device, 
                         loss = loss1 + 0.4*loss2
                     else:
                         outputs = model(inputs)
+                        print(outputs.shape)
                         loss = criterion(outputs, labels)
 
                     _, preds = torch.max(outputs, 1)
-
+                    #outputs = np.array(outputs)
+                    #preds = outputs >= 0.5
+                    #preds.astype(np.int)        
                     # backward + optimize only if in training phase
                     if phase == 'train':
                         loss.backward()

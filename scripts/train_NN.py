@@ -33,7 +33,7 @@ args = parser.parse_args()
 # Models to choose from [resnet, alexnet, vgg, squeezenet, densenet, inception]
 model_name = args.model
 # Label problem, atmospheric or others
-problem = 'atmospheric'
+problem = 'other'
 # Batch size for training (change depending on how much memory you have)
 batch_size = args.batch
 # Number of epochs to train for
@@ -64,14 +64,14 @@ print(model_ft)
 
 # Create training and validation datasets
 image_datasets = {x: PlanetDataset(csv_file='../data/train_v2.csv',
-                                    root_dir='../data/fast_' + x,
+                                    root_dir='../data/fast_dehazed_' + x,
                                     extension='.jpg',problem=problem , transform=transforms.Compose([
                                               transforms.Resize(input_size),transforms.ToTensor()])) for x in ['train', 'val']}
 # Create training and validation dataloaders
 dataloaders_dict = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=batch_size, shuffle=False, num_workers=1) for x in ['train', 'val']}
 
 # Detect if we have a GPU available
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 
 # Send the model to GPU
 model_ft = model_ft.to(device)
@@ -99,7 +99,8 @@ optimizer_ft = optim.SGD(params_to_update, lr=0.001, momentum=0.9)
 
 # Setup the loss fxn
 #TODO modify the loss function.
-criterion = nn.CrossEntropyLoss()
+## criterion = nn.CrossEntropyLoss()
+criterion = nn.BCEWithLogitsLoss()
 
 # Train and evaluate
 model_ft = train_model(name_file, model_resume, model_ft, dataloaders_dict, criterion, optimizer_ft, num_epochs=num_epochs, device = device, is_inception=(model_name=="inception"))
