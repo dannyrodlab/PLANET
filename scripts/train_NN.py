@@ -8,7 +8,7 @@ from create_planet_dataset import PlanetDataset
 import torchvision
 from torchvision import datasets, models, transforms
 from models import initialize_model
-from train_function import train_model
+from train_scheduler import train_model
 import matplotlib.pyplot as plt
 import time
 import os
@@ -33,7 +33,7 @@ args = parser.parse_args()
 # Models to choose from [resnet, alexnet, vgg, squeezenet, densenet, inception]
 model_name = args.model
 # Label problem, atmospheric or others
-problem = 'other'
+problem = 'atmospheric'
 # Batch size for training (change depending on how much memory you have)
 batch_size = args.batch
 # Number of epochs to train for
@@ -71,7 +71,7 @@ image_datasets = {x: PlanetDataset(csv_file='../data/train_v2.csv',
 dataloaders_dict = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=batch_size, shuffle=False, num_workers=1) for x in ['train', 'val']}
 
 # Detect if we have a GPU available
-device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 # Send the model to GPU
 model_ft = model_ft.to(device)

@@ -145,4 +145,4 @@ def train_model(name, resume, model, dataloaders, criterion, optimizer, device, 
 
     # load best model weights
     ## model.load_state_dict(best_model_wts)
-return model
+    return model
